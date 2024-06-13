@@ -1,6 +1,19 @@
 from collections import defaultdict
 from save_to_file import save_to_csv
+import argparse
+import os
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', '-i', nargs='+', help='Tokenized corpora')
+    parser.add_argument('--window', '-w', type=int, help='Window size - number of tokens on each side')
+    parser.add_argument('--direction', '-d', type=str, help='Window direction: left, right or both.')
+    parser.add_argument('--terms', '-t', nargs='+', help='Terms of interest.')
+    parser.add_argument('--rate', '-r', type=int, help='Occurrence rate for normalized frequency.')
+    parser.add_argument('--output', '-o', help='Path to the output file.')
+    args = parser.parse_args()
+
+    return args
 def normalize(occurences,length, rate):
     for term in occurences:
         for context_word in occurences[term]:
@@ -29,10 +42,12 @@ def frequency(data, window, direction, terms, rate, out):
                     for c in context:
                         occurrences[line][c.strip()] +=1
     normalize(occurrences, length, rate)
-    save_to_csv(occurrences, out)
+    save_to_csv(occurrences, f'{out}_{os.path.basename(data).split(".")[0]}.csv')
 
 def main():
-    frequency('tokens_test.txt', 3, 'both', ['apple', 'cloud', 'stream', 'lamp'], 10000, 'occurrences_test.csv')
+    args = parse_args()
+    for corpus in args.input:
+        frequency(corpus, args.window, args.direction, args.terms, args.rate, args.output)
 
 if __name__ == '__main__':
     main()

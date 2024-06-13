@@ -1,6 +1,20 @@
+import argparse
 from collections import defaultdict
 import numpy as np
 from save_to_file import save_to_csv
+import os
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', '-i', nargs='+', help='Tokenized corpora')
+    parser.add_argument('--window', '-w', type=int, help='Window size - number of tokens on each side')
+    parser.add_argument('--direction', '-d', type=str, help='Window direction: left, right or both.')
+    parser.add_argument('--terms', '-t', nargs='+', help='Terms of interest.')
+    parser.add_argument('--output', '-o', help='Path to the output file.')
+    args = parser.parse_args()
+
+    return args
 
 def pmi_score(data, window, direction, terms, out):
     occurrences = {term: defaultdict(int) for term in terms}
@@ -40,10 +54,13 @@ def pmi_score(data, window, direction, terms, out):
 
             occurrences[term][word] = prob
 
-    save_to_csv(occurrences, out)
+    save_to_csv(occurrences, f'{out}_{os.path.basename(data).split(".")[0]}.csv')
 
 def main():
-    pmi_score('tokens_test.txt', 3, 'both', ['apple', 'cloud'], 'pmi_test.csv')
+    args = parse_args()
+
+    for corpus in args.input:
+        pmi_score(corpus, args.window, args.direction, args.terms, args.output)
 
 if __name__ == '__main__':
     main()
