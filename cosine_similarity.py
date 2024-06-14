@@ -23,7 +23,7 @@ def read_vectors(file_path):
     return df.columns.tolist(), {term: vectors[i] for i, term in enumerate(terms)}
 
 def align_vectors(vector1, vector2, context_words1, context_words2):
-    '''cosine_similarity assumes vectors of the same size, so need to align them'''
+    '''vectors are the same length on a term-to-term basis, but not overall - this will help create equal matrices for comparison'''
     combined_context_words = list(set(context_words1 + context_words2))
     aligned_vector1 = np.zeros(len(combined_context_words))
     aligned_vector2 = np.zeros(len(combined_context_words))
@@ -46,13 +46,18 @@ def main(file1, file2, output_file):
 
     with open(output_file, 'w') as f:
         f.write('Term,Similarity,Interpretation\n') #header
+
         for term, vector1 in vectors1.items():
             if term in vectors2:
                 vector2 = vectors2[term]
-                aligned_vector1, aligned_vector2 = align_vectors(vector1, vector2, context_words1, context_words2)
-                similarity_score = similarity(aligned_vector1, aligned_vector2)
-                interpretation = interpret_similarity(similarity_score)
-                f.write(f'{term},{similarity_score},{interpretation}\n') #save
+                #making sure the term actually occurred in both corpora
+                if not np.all(vector1 == 0) and not np.all(vector2 == 0):
+                    aligned_vector1, aligned_vector2 = align_vectors(vector1, vector2, context_words1, context_words2)
+                    similarity_score = similarity(aligned_vector1, aligned_vector2)
+                    interpretation = interpret_similarity(similarity_score)
+                    f.write(f'{term},{similarity_score},{interpretation}\n') #save
+                else:
+                    f.write(f'{term} was not observed in one of the corpora - similarity measurement is not possible.\n')
 
 
 if __name__ == '__main__':
@@ -66,3 +71,4 @@ if __name__ == '__main__':
     output_file = sys.argv[3]
 
     main(file1, file2, output_file)
+    # main('output/normalized_frequency.csv_corpus_2001_2005.csv', 'output/normalized_frequency.csv_corpus_2008_2012.csv', 'output/normalized_frequency_similarity.txt')
