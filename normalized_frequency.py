@@ -51,5 +51,5 @@ def main():
         frequency(corpus, args.window, args.direction, args.terms, args.rate, args.output)
 
 if __name__ == '__main__':
-    # main()
-    frequency('data/corpus_2001_2005.txt.lemmas', 3, 'both', ['veto', 'impeachment', 'subpoena'], 100, 'test.csv')
+    main()
+    # frequency('data/corpus_2001_2005.txt.lemmas', 3, 'both', ['veto', 'impeachment', 'subpoena'], 100, 'test.csv')
