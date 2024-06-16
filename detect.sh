@@ -56,7 +56,7 @@ python3 $WORD2VEC_SCRIPT --models $OUTPUT_DIR/word2vec_models/model_${CORPUS_R1}
 echo 'Running BERT...'
 python3 $BERT_SCRIPT --input $DATA/$CORPUS_R1 $DATA/$CORPUS_R2 --terms "${TERMS[@]}" --max_clusters $MAX_CLUSTERS --threshold $THRESHOLD --output $OUTPUT_DIR/bert.csv
 
-#echo 'Running cosine similarity analysis...'
+echo 'Running cosine similarity analysis...'
 CORPUS_R1_CSV="${CORPUS_R1%.txt}.csv"
 CORPUS_R2_CSV="${CORPUS_R2%.txt}.csv"
 #
