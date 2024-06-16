@@ -1,0 +1,11 @@
+Term,Similarity,Interpretation
+surveillance,0.8076118397657852,Moderately similar (possible slight semantic shift)
+bailout was not observed in one of the corpora - similarity measurement is not possible.
+transparency,0.8951212143425166,Very similar (likely minimal or no semantic shift)
+lobbying,0.42442498090788644,Somewhat similar (likely moderate semantic shift)
+precedent,0.7833153891925368,Moderately similar (possible slight semantic shift)
+subpoena was not observed in one of the corpora - similarity measurement is not possible.
+impeachment,0.0,Not similar (likely significant semantic shift)
+asylum,0.8425934132952329,Moderately similar (possible slight semantic shift)
+veto,0.6558900808700716,Moderately similar (possible slight semantic shift)
+constitution,0.5590789038934325,Somewhat similar (likely moderate semantic shift)
