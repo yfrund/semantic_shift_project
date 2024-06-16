@@ -11,7 +11,7 @@ def save_to_csv(occurrences, out):
 
 
         for term, words in occurrences.items():
-            row = [term] + [words.get(word, 0) for word in all_words]
+            row = [term] + [words.get(word, 0) for word in all_words] #vectors for the same term will be the same length
             writer.writerow(row)
 
 def ri_to_csv(embeddings, out):
@@ -23,7 +23,7 @@ def ri_to_csv(embeddings, out):
 
 def w2v_to_csv(term, similarity, interpretation, out):
 
-    with open(out, 'w', newline='', encoding='utf-8') as csvfile:
+    with open(out, 'a', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
 
         writer.writerow([term, similarity, interpretation])

@@ -46,18 +46,22 @@ python3 $RANDOM_INDEXING_SCRIPT --input $CORPUS_TL1 $CORPUS_TL2 --window $WINDOW
 
 
 echo 'Running word2vec...'
-python3 $WORD2VEC_SCRIPT --input $CORPUS_R1 $CORPUS_R2 --terms "${TERMS[@]}" --output $OUTPUT_DIR/word2vec.csv
+#to train models:
+#python3 $WORD2VEC_SCRIPT --input $DATA/$CORPUS_R1 $DATA/$CORPUS_R2 --terms "${TERMS[@]}" --window $WINDOW --output $OUTPUT_DIR/word2vec.csv --model_save_dir $OUTPUT_DIR
+
+#to work with pre-trained models
+python3 $WORD2VEC_SCRIPT --models $OUTPUT_DIR/word2vec_models/model_${CORPUS_R1}.bin $OUTPUT_DIR/word2vec_models/model_${CORPUS_R2}.bin --terms "${TERMS[@]}" --window $WINDOW --output $OUTPUT_DIR/word2vec.csv --model_save_dir $OUTPUT_DIR
 
 
 echo 'Running BERT...'
-python3 $BERT_SCRIPT --input $CORPUS_R1 $CORPUS_R2 --terms "${TERMS[@]}" --max_clusters $MAX_CLUSTERS --threshold $THRESHOLD --output $OUTPUT_DIR/bert.csv
+python3 $BERT_SCRIPT --input $DATA/$CORPUS_R1 $DATA/$CORPUS_R2 --terms "${TERMS[@]}" --max_clusters $MAX_CLUSTERS --threshold $THRESHOLD --output $OUTPUT_DIR/bert.csv
 
-echo 'Running cosine similarity analysis...'
+#echo 'Running cosine similarity analysis...'
 CORPUS_R1_CSV="${CORPUS_R1%.txt}.csv"
 CORPUS_R2_CSV="${CORPUS_R2%.txt}.csv"
-
-python3 $COSINE_SIMILARITY_SCRIPT $OUTPUT_DIR/normalized_frequency.csv_$CORPUS_R1_CSV $OUTPUT_DIR/normalized_frequency.csv_$CORPUS_R2_CSV $OUTPUT_DIR/normalized_frequency_similarity.csv
-python3 $COSINE_SIMILARITY_SCRIPT $OUTPUT_DIR/pmi.csv_$CORPUS_R1_CSV $OUTPUT_DIR/pmi.csv_$CORPUS_R2_CSV $OUTPUT_DIR/pmi_similarity.csv
-python3 $COSINE_SIMILARITY_SCRIPT $OUTPUT_DIR/random_indexing.csv_$CORPUS_R1_CSV $OUTPUT_DIR/random_indexing.csv_$CORPUS_R2_CSV $OUTPUT_DIR/random_indexing_similarity.csv
+#
+python3 $COSINE_SIMILARITY_SCRIPT $OUTPUT_DIR/normalized_frequency.csv_${CORPUS_R1_CSV} $OUTPUT_DIR/normalized_frequency.csv_${CORPUS_R2_CSV} $OUTPUT_DIR/normalized_frequency_similarity.csv
+python3 $COSINE_SIMILARITY_SCRIPT $OUTPUT_DIR/pmi.csv_${CORPUS_R1_CSV} $OUTPUT_DIR/pmi.csv_${CORPUS_R2_CSV} $OUTPUT_DIR/pmi_similarity.csv
+#python3 $COSINE_SIMILARITY_SCRIPT $OUTPUT_DIR/random_indexing.csv_${CORPUS_R1_CSV} $OUTPUT_DIR/random_indexing.csv_${CORPUS_R2_CSV} $OUTPUT_DIR/random_indexing_similarity.csv
 
 echo 'All similarities calculated and saved in $OUTPUT_DIR.'

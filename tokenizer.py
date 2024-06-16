@@ -43,8 +43,6 @@ def main():
     stopwords = stop_words.STOP_WORDS
 
 
-    # tokenize('tokens_test.txt', stopwords, tokenizer, 'pg5200.txt')
-
     args = parse_args()
 
     tokenize(args.input, stopwords, tokenizer, args.tokens)
